@@ -10,6 +10,7 @@ import 'package:logistics_app/features/profile/data/repositories/employee_profil
 import 'package:logistics_app/features/profile/domain/repositories/employee_repository.dart';
 import 'package:logistics_app/features/profile/domain/usecases/get_employee_profile.dart';
 import 'package:logistics_app/features/profile/presentation/bloc/employee_profile_bloc.dart';
+import 'package:logistics_app/features/reports/presentation/bloc/reports_bloc.dart';
 import 'package:logistics_app/features/requests/data/data_source/categories_data_source.dart';
 import 'package:logistics_app/features/requests/data/data_source/user_requests_data_source.dart';
 import 'package:logistics_app/features/requests/data/repositories/categories_repository_impl.dart';
@@ -46,12 +47,12 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<AuthRepositories>(
-    () => AuthRepositoriesImpl(networkInfo: sl(), authDataSource: sl()),
+        () => AuthRepositoriesImpl(networkInfo: sl(), authDataSource: sl()),
   );
 
   // DataSource
   sl.registerLazySingleton<AuthDataSource>(
-    () => AuthDataSourceImpl(client: sl()),
+        () => AuthDataSourceImpl(client: sl()),
   );
 
   /// Dashboard
@@ -63,12 +64,12 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<DashboardRepository>(
-    () => DashboardRepositoryImpl(networkInfo: sl(), dashboardDataSource: sl()),
+        () => DashboardRepositoryImpl(networkInfo: sl(), dashboardDataSource: sl()),
   );
 
   // DataSource
   sl.registerLazySingleton<DashboardDataSource>(
-    () => DashboardDataSourceImpl(client: sl()),
+        () => DashboardDataSourceImpl(client: sl()),
   );
 
   /// My Requests
@@ -80,7 +81,7 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<RequestRepository>(
-    () => UserRequestsRepositoryImpl(
+        () => UserRequestsRepositoryImpl(
       networkInfo: sl(),
       userRequestsDataSource: sl(),
       createRequestDataSource: sl(),
@@ -89,7 +90,7 @@ Future<void> init() async {
 
   // Data Source
   sl.registerLazySingleton<UserRequestsDataSource>(
-    () => UserRequestsDataSourceImpl(client: sl()),
+        () => UserRequestsDataSourceImpl(client: sl()),
   );
 
   /// Create Request
@@ -101,7 +102,7 @@ Future<void> init() async {
 
   // DataSource
   sl.registerLazySingleton<CreateRequestDataSource>(
-    () => CreateRequestDataSourceImpl(client: sl()),
+        () => CreateRequestDataSourceImpl(client: sl()),
   );
 
   /// Categories WIth Types
@@ -113,18 +114,18 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<CategoriesRepository>(
-    () => CategoriesRepositoryImpl(networkInfo: sl(), dataSource: sl()),
+        () => CategoriesRepositoryImpl(networkInfo: sl(), dataSource: sl()),
   );
 
   // Data Source
   sl.registerLazySingleton<CategoriesDataSource>(
-    () => CategoriesDataSourceImpl(client: sl()),
+        () => CategoriesDataSourceImpl(client: sl()),
   );
 
   /// Profile
   // Bloc
   sl.registerFactory(
-    () => EmployeeProfileBloc(getEmployeeProfileUseCase: sl()),
+        () => EmployeeProfileBloc(getEmployeeProfileUseCase: sl()),
   );
 
   // Use Case
@@ -132,15 +133,19 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<EmployeeRepository>(
-    () => EmployeeRepositoryImpl(
+        () => EmployeeRepositoryImpl(
       networkInfo: sl(),
       employeeProfileDataSource: sl(),
     ),
   );
 
+  /// Reports
+  // Bloc
+  sl.registerFactory(()=> ReportsBloc(getDashboardDataUseCase: sl()));
+
   // Data Source
   sl.registerLazySingleton<EmployeeProfileDataSource>(
-    () => EmployeeRemoteDataSourceImpl(client: sl()),
+        () => EmployeeRemoteDataSourceImpl(client: sl()),
   );
 
   /// Core

@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     DashboardPage(userId: AppStorage().getUserId() ?? 0),
     RequestsPage(),
-    const ReportsPage(),
+    ReportsPage(userId:AppStorage().getUserId() ?? 0 ,),
     ProfilePage()
   ];
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/app_colours.dart';
+import '../../../auth/login/presentation/pages/login_page.dart';
 import '../../../on_boarding/presentation/pages/on_boarding_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -13,6 +16,10 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  final SharedPreferences prefs = GetIt.instance<SharedPreferences>();
+
+
   @override
   void initState() {
     super.initState();
@@ -20,13 +27,20 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _checkFirstLaunch() async {
-    // In a real app, check if this is first launch
-    bool isFirstLaunch = true; // Get from shared prefs
+    // Check if it's first launch
+    final bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
 
     Future.delayed(const Duration(seconds: 3), () {
       if (isFirstLaunch) {
+        // Set flag to false and navigate to onboarding
+        prefs.setBool('isFirstLaunch', false);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const OnboardingPage()),
+        );
+      } else {
+        // Navigate directly to login if not first launch
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
       }
     });
